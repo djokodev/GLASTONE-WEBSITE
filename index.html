@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institut de Beauté GLADSTONE</title>
+    <meta name="description" content="Institut de Beauté GLADSTONE à Douala - Plus de 20 ans d'expérience, note 4.8/5. Services professionnels de beauté et soins esthétiques.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <!-- Header avec navigation -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1>GLADSTONE</h1>
+                <p>Institut de Beauté</p>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="#apropos" class="nav-link">À Propos</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#galerie" class="nav-link">Galerie</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Section Hero -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2>Sublimez votre beauté, une expertise au cœur de Douala</h2>
+                <p class="hero-subtitle">Plus de 1200 clients satisfaits</p>
+                <p class="hero-description">Notre équipe d'experts vous offre des soins personnalisés dans un cadre luxueux et apaisant.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">4.8</span>
+                        <span class="stat-label">
+                            <span class="stars">★★★★★</span> (1,2k avis)
+                        </span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">20+</span>
+                        <span class="stat-label">années d'expérience</span>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="https://wa.me/237677953893?text=Bonjour%20GLADSTONE%20%F0%9F%8C%9F%0AJe%20souhaite%20prendre%20un%20rendez-vous%20pour%20vos%20services%20de%20beaut%C3%A9.%0AMerci%20!" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Prendre Rendez-vous
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">Formulaire Complet</a>
+                </div>
+            </div>
+            <div class="hero-media">
+                <video autoplay muted loop playsinline class="hero-video" poster="2024-11-13.webp" id="heroVideo">
+                    <source src="video_services.mp4" type="video/mp4">
+                    <source src="video_services.webm" type="video/webm">
+                    <img src="2024-11-13.webp" alt="Institut de Beauté GLADSTONE" style="width: 100%; height: 100%; object-fit: cover;">
+                </video>
+                <div class="video-controls">
+                    <button class="sound-toggle" id="heroSoundToggle" title="Activer/Désactiver le son">
+                        🔇
+                    </button>
+                </div>
+                <div class="hero-overlay"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section À Propos -->
+    <section id="apropos" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="section-header">
+                        <h3>Notre savoir-faire au service de votre beauté</h3>
+                    </div>
+                    <div class="about-description">
+                        <p>L'Institut de Beauté GLADSTONE s'est imposé comme une référence incontournable à Douala. Notre philosophie repose sur l'excellence du service, l'utilisation de produits haut de gamme et l'expertise reconnue de notre équipe.</p>
+                        <div class="about-highlights">
+                            <div class="highlight">
+                                <div class="highlight-icon">🏆</div>
+                                <div class="highlight-text">
+                                    <h4>20+ années d'expérience</h4>
+                                    <p>Un savoir-faire reconnu et transmis</p>
+                                </div>
+                            </div>
+                            <div class="highlight">
+                                <div class="highlight-icon">🧴</div>
+                                <div class="highlight-text">
+                                    <h4>Produits de qualité supérieure</h4>
+                                    <p>Sélection rigoureuse des meilleures marques</p>
+                                </div>
+                            </div>
+                            <div class="highlight">
+                                <div class="highlight-icon">👥</div>
+                                <div class="highlight-text">
+                                    <h4>Équipe d'experts</h4>
+                                    <p>Professionnels bien formés</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <video autoplay muted loop playsinline class="about-video" poster="2025-02-07.webp" id="aboutVideo">
+                        <source src="video_locaux.mp4" type="video/mp4">
+                        <source src="video_locaux.webm" type="video/webm">
+                        <img src="2025-02-07.webp" alt="Intérieur de l'Institut de Beauté GLADSTONE" style="width: 100%; height: 100%; object-fit: cover;">
+                    </video>
+                    <div class="video-controls">
+                        <button class="sound-toggle" id="aboutSoundToggle" title="Activer/Désactiver le son">
+                            🔇
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Services -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nos Prestations</h2>
+                <p>Une gamme complète de services pour vous</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">✂️</div>
+                    <h3>Coiffure</h3>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🌸</div>
+                    <h3>Esthétique</h3>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💅</div>
+                    <h3>Onglerie</h3>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧘‍♀️</div>
+                    <h3>Massages & Bien-être</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Galerie -->
+    <section id="galerie" class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2>Découvrez...</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="interior">
+                    <img src="espace1.webp" alt="Institut de Beauté GLADSTONE - Intérieur moderne et élégant" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Notre Espace</h4>
+                            <p>Intérieur moderne et chaleureux</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="services">
+                    <img src="2024-07-20.webp" alt="Soins de beauté professionnels GLADSTONE" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Soins Beauté</h4>
+                            <p>Techniques professionnelles</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="equipment">
+                    <img src="2024-01-20.webp" alt="Équipements professionnels de pointe" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Onglerie</h4>
+                            <p>Manucure & pédicure</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="ambiance">
+                    <img src="2023-07-19.webp" alt="Espace détente et relaxation" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Onglerie</h4>
+                            <p>Manucure & pédicure</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="services">
+                    <img src="2022-01-21.webp" alt="Soins du visage expertisés" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Team</h4>
+                            <p>Notre équipe</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="results">
+                    <img src="unnamed.webp" alt="Résultats exceptionnels de nos soins" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Résultats</h4>
+                            <p>Excellence et satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="results">
+                    <img src="espace2.webp" alt="Institut de Beauté GLADSTONE - Intérieur moderne et élégant" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Notre Espace</h4>
+                            <p>Intérieur moderne et chaleureux</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="results">
+                    <img src="coifure1.webp" alt="Coiffure d'une cliente" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Coiffure</h4>
+                            <p>Coupe</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="results">
+                    <img src="espace3.webp" alt="Institut de Beauté GLADSTONE - Extérieur" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h4>Notre Espace</h4>
+                            <p>Extérieur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal pour galerie -->
+        <div id="galleryModal" class="gallery-modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <img id="modalImage" src="" alt="">
+                <div class="modal-info">
+                    <h4 id="modalTitle"></h4>
+                    <p id="modalDescription"></p>
+                </div>
+                <div class="modal-nav">
+                    <button id="modalPrev" class="modal-nav-btn">‹</button>
+                    <button id="modalNext" class="modal-nav-btn">›</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact & Accès -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contactez-nous & Planifiez votre visite</h2>
+                <p>Votre satisfaction est notre priorité, contactez-nous facilement</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div>
+                            <h3>Adresse</h3>
+                            <p>391 Rue Tokoto<br>Douala, Cameroun</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div>
+                            <h3>Téléphone</h3>
+                            <p><a href="tel:+237677953893">+237 6 77 95 38 93</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div>
+                            <h3>Horaires d'ouverture</h3>
+                            <div class="schedule">
+                                <div class="schedule-item">
+                                    <span class="day">Lundi - Dimanche</span>
+                                    <span class="time">09:30 - 20:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contactForm">
+                        <h3>Prendre Rendez-vous</h3>
+                        <div class="form-group">
+                            <label for="name">Nom complet *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service souhaité</label>
+                            <select id="service" name="service">
+                                <option value="">Sélectionner un service</option>
+                                <option value="coiffure">Coiffure</option>
+                                <option value="esthetique">Esthétique</option>
+                                <option value="onglerie">Onglerie</option>
+                                <option value="massage-bien-etre">Massages & Bien-être</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Précisez votre demande ou vos préférences d'horaires..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Carte Google Maps -->
+            <div class="map-container">
+
+                <div class="map-embed">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15917.359754934173!2d9.6881638!3d4.0249072!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x106113a860e4b2b3%3A0xbfe637c053253dd!2sInstitut%20de%20Beaut%C3%A9%20GLADSTONE%2C%20Douala!5e0!3m2!1sfr!2scm!4v1673890123456!5m2!1sfr!2scm" 
+                        width="100%" 
+                        height="300" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Localisation Institut de Beauté GLADSTONE, 391 Rue Tokoto, Douala">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GLADSTONE</h3>
+                    <p>Institut de Beauté</p>
+                    <p>Votre partenaire beauté depuis plus de 20 ans à Douala.</p>
+                    <div class="footer-rating">
+                        <span class="stars">★★★★★</span>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Rapide</h4>
+                    <p>391 Rue Tokoto, Douala</p>
+                    <p><a href="tel:+237677953893">+237 6 77 95 38 93</a></p>
+                    <p>09:30 - 20:00 (7j/7)</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Nos Prestations</h4>
+                    <ul>
+                        <li>Coiffure</li>
+                        <li>Esthétique</li>
+                        <li>Onglerie</li>
+                        <li>Massages & Bien-être</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Suivez-nous</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook" title="Suivez-nous sur Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram" title="Découvrez nos réalisations sur Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="WhatsApp" title="Contactez-nous sur WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="TikTok" title="Nos vidéos tendances sur TikTok">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Institut de Beauté GLADSTONE. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
