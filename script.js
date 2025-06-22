@@ -24,8 +24,10 @@ function initMobileMenu() {
     
     if (!navToggle || !navMenu) return;
     
-    // Détection iOS
+    // Détection des plateformes mobiles
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isMobile = isIOS || isAndroid || /Mobile|Tablet/.test(navigator.userAgent);
     
     // Variable pour stocker la position de scroll
     let scrollPosition = 0;
@@ -40,11 +42,17 @@ function initMobileMenu() {
         navMenu.classList.add('active');
         body.classList.add('menu-open');
         
-        // Correctif spécifique iOS
-        if (isIOS) {
-            body.style.position = 'fixed';
-            body.style.top = `-${scrollPosition}px`;
-            body.style.width = '100%';
+        // Correctifs spécifiques mobiles
+        if (isMobile) {
+            if (isIOS) {
+                // Correctif iOS spécifique
+                body.style.position = 'fixed';
+                body.style.top = `-${scrollPosition}px`;
+                body.style.width = '100%';
+            } else if (isAndroid) {
+                // Correctif Android plus léger
+                body.style.overflow = 'hidden';
+            }
         }
         
         // Accessibilité
@@ -58,12 +66,18 @@ function initMobileMenu() {
         navMenu.classList.remove('active');
         body.classList.remove('menu-open');
         
-        // Correctif spécifique iOS
-        if (isIOS) {
-            body.style.position = '';
-            body.style.top = '';
-            body.style.width = '';
-            window.scrollTo(0, scrollPosition);
+        // Correctifs spécifiques mobiles
+        if (isMobile) {
+            if (isIOS) {
+                // Restaurer position iOS
+                body.style.position = '';
+                body.style.top = '';
+                body.style.width = '';
+                window.scrollTo(0, scrollPosition);
+            } else if (isAndroid) {
+                // Restaurer overflow Android
+                body.style.overflow = '';
+            }
         }
         
         // Accessibilité
@@ -92,26 +106,60 @@ function initMobileMenu() {
     // Fermer le menu quand on clique sur un lien
     const navLinks = navMenu.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Fermer le menu
-            closeMenu();
+        // Fonction commune pour gérer le clic sur un lien
+        function handleLinkClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            // Forcer la mise à jour de la navigation active après un délai
-            setTimeout(() => {
-                if (window.updateActiveNavigation) {
-                    window.updateActiveNavigation();
-                }
-            }, 500);
-        });
+            // Récupérer la cible
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                // Fermer le menu immédiatement
+                closeMenu();
+                
+                // Calculer la position de scroll
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = targetSection.offsetTop - headerHeight - 20;
+                
+                // Attendre que le menu se ferme avant de scroller
+                setTimeout(() => {
+                    // Défilement fluide
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                                         // Mettre à jour la navigation active après le scroll
+                     setTimeout(() => {
+                         if (window.forceUpdateNavigationMobile) {
+                             window.forceUpdateNavigationMobile();
+                         }
+                     }, 300);
+                }, 100);
+            }
+        }
         
-        link.addEventListener('touchstart', function(e) {
-            closeMenu();
-            setTimeout(() => {
-                if (window.updateActiveNavigation) {
-                    window.updateActiveNavigation();
-                }
-            }, 500);
-        }, { passive: true });
+        // Événements pour desktop et mobile
+        link.addEventListener('click', handleLinkClick);
+        
+        // Événements tactiles pour appareils mobiles
+        if (isMobile) {
+            // Événement touchend pour iOS et Android
+            link.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                const platform = isIOS ? 'iOS' : isAndroid ? 'Android' : 'Mobile';
+                console.log(`${platform}: TouchEnd sur lien navigation:`, link.getAttribute('href'));
+                handleLinkClick(e);
+            }, { passive: false });
+            
+            // Événement touchstart pour debug et préparation
+            link.addEventListener('touchstart', function(e) {
+                const platform = isIOS ? 'iOS' : isAndroid ? 'Android' : 'Mobile';
+                console.log(`${platform}: TouchStart sur lien navigation:`, link.getAttribute('href'));
+            }, { passive: true });
+        }
     });
     
     // Fermer le menu si on clique en dehors
@@ -141,51 +189,69 @@ function initMobileMenu() {
  * Améliore la navigation vers les sections
  */
 function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('a[href^="#"]');
+    const navLinks = document.querySelectorAll('a[href^="#"]:not(.nav-link)'); // Exclure les nav-links car ils sont gérés dans initMobileMenu
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isMobile = isIOS || isAndroid || /Mobile|Tablet/.test(navigator.userAgent);
+    
+    function handleSmoothScroll(e, link) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+            // Fermer le menu mobile si ouvert
+            const navMenu = document.getElementById('navMenu');
+            const navToggle = document.getElementById('navToggle');
+            const body = document.body;
+            
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                body.classList.remove('menu-open');
+                
+                // Correctif iOS
+                if (isIOS) {
+                    body.style.position = '';
+                    body.style.top = '';
+                    body.style.width = '';
+                }
+            }
+            
+            // Calculer la position de scroll
+            const headerHeight = document.querySelector('.header').offsetHeight;
+            const targetPosition = targetSection.offsetTop - headerHeight - 20;
+            
+            // Défilement fluide
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Forcer la mise à jour de la navigation active après le scroll
+            setTimeout(() => {
+                if (window.forceUpdateNavigationMobile) {
+                    window.forceUpdateNavigationMobile();
+                }
+            }, 300);
+        }
+    }
     
     navLinks.forEach(link => {
+        // Événement click standard
         link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                // Fermer le menu mobile si ouvert
-                const navMenu = document.getElementById('navMenu');
-                const navToggle = document.getElementById('navToggle');
-                const body = document.body;
-                
-                if (navMenu && navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    navToggle.classList.remove('active');
-                    body.classList.remove('menu-open');
-                    
-                    // Correctif iOS
-                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-                    if (isIOS) {
-                        body.style.position = '';
-                        body.style.top = '';
-                        body.style.width = '';
-                    }
-                }
-                
-                // Calculer la position de scroll
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                const targetPosition = targetSection.offsetTop - headerHeight - 20;
-                
-                // Défilement fluide
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-                
-                // Forcer la mise à jour de la navigation active après le scroll
-                setTimeout(() => {
-                    updateActiveNavigation();
-                }, 100);
-            }
+            handleSmoothScroll(e, this);
         });
+        
+        // Événements tactiles pour appareils mobiles
+        if (isMobile) {
+            link.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                handleSmoothScroll(e, this);
+            }, { passive: false });
+        }
     });
 }
 
@@ -251,6 +317,29 @@ function initActiveNavigation() {
         });
     };
     
+    // Fonction universelle pour forcer la mise à jour de la navigation sur mobile
+    window.forceUpdateNavigationMobile = function() {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isMobile = isIOS || isAndroid || /Mobile|Tablet/.test(navigator.userAgent);
+        
+        if (isMobile) {
+            // Pour les appareils mobiles, forcer plusieurs mises à jour avec des délais
+            // iOS nécessite plus de tentatives qu'Android
+            const delays = isIOS ? [100, 300, 600, 1000] : [100, 300, 500];
+            
+            delays.forEach(delay => {
+                setTimeout(() => window.updateActiveNavigation(), delay);
+            });
+        } else {
+            // Desktop : une seule mise à jour suffit
+            window.updateActiveNavigation();
+        }
+    };
+    
+    // Garder l'ancienne fonction pour compatibilité
+    window.forceUpdateNavigationIOS = window.forceUpdateNavigationMobile;
+    
     // Mettre à jour au scroll avec throttling
     let ticking = false;
     function throttledUpdate() {
@@ -266,6 +355,31 @@ function initActiveNavigation() {
     // Événements
     window.addEventListener('scroll', throttledUpdate);
     window.addEventListener('resize', throttledUpdate);
+    
+    // Événements spéciaux pour appareils mobiles
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isMobile = isIOS || isAndroid || /Mobile|Tablet/.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Détecter la fin du scroll sur mobile
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const platform = isIOS ? 'iOS' : isAndroid ? 'Android' : 'Mobile';
+                console.log(`${platform}: Fin de scroll détectée, mise à jour navigation`);
+                window.forceUpdateNavigationMobile();
+            }, 150);
+        });
+        
+        // Événements tactiles supplémentaires pour mobile
+        window.addEventListener('touchend', function() {
+            setTimeout(() => {
+                window.forceUpdateNavigationMobile();
+            }, 200);
+        });
+    }
     
     // Initialiser immédiatement
     updateActiveNavigation();
