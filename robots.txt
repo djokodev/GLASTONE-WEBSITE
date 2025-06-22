@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://glastone-website.vercel.app/sitemap.xml
+
+# Optimisation pour les moteurs de recherche
+Crawl-delay: 1
+
+# Permettre l'indexation de toutes les pages importantes
+Allow: /index.html
+Allow: /styles.css
+Allow: /script.js
+Allow: /*.webp
+Allow: /*.mp4
+
+# Institut de Beauté GLADSTONE Douala
+# Coiffure, Esthétique, Onglerie, Massages
+# Bonapriso, 391 Rue Tokoto, Douala, Cameroun 

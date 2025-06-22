@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initActiveNavigation();
     initGalleryModal();
+    initGalleryTabs();
     initEnhancedAnimations();
     initVideoAutoplay();
     initSoundControls();
@@ -528,6 +529,89 @@ function initGalleryModal() {
                 break;
         }
     });
+}
+
+/**
+ * GALERIE AVEC ONGLETS
+ * Gère la navigation entre les différentes catégories (Réalisations, Produits, Espace)
+ */
+function initGalleryTabs() {
+    const galleryTabs = document.querySelectorAll('.gallery-tab');
+    const gallerySections = document.querySelectorAll('.gallery-section');
+    
+    if (!galleryTabs.length || !gallerySections.length) return;
+    
+    // Fonction pour changer d'onglet
+    function switchTab(targetCategory) {
+        // Retirer les classes actives de tous les onglets et sections
+        galleryTabs.forEach(tab => tab.classList.remove('active'));
+        gallerySections.forEach(section => section.classList.remove('active'));
+        
+        // Activer l'onglet cliqué
+        const activeTab = document.querySelector(`[data-category="${targetCategory}"]`);
+        const activeSection = document.querySelector(`[data-section="${targetCategory}"]`);
+        
+        if (activeTab && activeSection) {
+            activeTab.classList.add('active');
+            activeSection.classList.add('active');
+            
+            // Animation fade in pour la section
+            activeSection.style.opacity = '0';
+            activeSection.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                activeSection.style.transition = 'all 0.5s ease';
+                activeSection.style.opacity = '1';
+                activeSection.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Déclencher les animations des éléments enfants
+            const animatedElements = activeSection.querySelectorAll('.gallery-item, .product-item');
+            animatedElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'all 0.4s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 150 + (index * 100)); // Décalage pour effet cascade
+            });
+        }
+    }
+    
+    // Ajouter les événements aux onglets
+    galleryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetCategory = this.dataset.category;
+            switchTab(targetCategory);
+            
+            // Animation de click feedback
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+        
+        // Animation au hover
+        tab.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('active')) {
+                this.style.transform = 'translateY(-3px)';
+            }
+        });
+        
+        tab.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('active')) {
+                this.style.transform = '';
+            }
+        });
+    });
+    
+    // Initialiser avec le premier onglet actif
+    if (galleryTabs[0]) {
+        const firstCategory = galleryTabs[0].dataset.category;
+        switchTab(firstCategory);
+    }
 }
 
 /**
