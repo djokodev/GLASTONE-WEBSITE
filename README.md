@@ -1,7 +1,6 @@
 # 🏛️ Institut de Beauté GLADSTONE - Site Web
 
 ## 📋 Description du Projet
-Site web professionnel développé pour l'Institut de Beauté GLADSTONE à Douala, Cameroun. 
 Un site moderne et élégant qui présente les services de beauté, l'espace et permet la prise de rendez-vous.
 
 ## 🛠️ Technologies Utilisées
@@ -32,22 +31,10 @@ Un site moderne et élégant qui présente les services de beauté, l'espace et 
 - **Accent** : #B8784F (orange-marron)
 - **Fond** : #F5E6D3 (beige clair)
 
-## 📱 Responsive Design
-- Mobile : < 768px
-- Tablette : 768px - 1024px
-- Desktop : > 1024px
-
 ## 🚀 Optimisations
 - Images WebP pour des performances optimales
 - Lazy loading des images
 - CSS optimisé avec variables
 - JavaScript modulaire
 - SEO-friendly
-
-## 👨‍💻 Développeur
-**DjokoDev** - Développeur Web Junior  
-📧 contact@djokodev.com  
-📱 +237 6XX XXX XXX
-
 ---
-*Projet réalisé avec passion pour l'Institut de Beauté GLADSTONE* 

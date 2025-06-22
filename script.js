@@ -15,43 +15,105 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * NAVIGATION MOBILE
- * Gère l'ouverture/fermeture du menu sur mobile
+ * Gère l'ouverture/fermeture du menu sur mobile avec support iOS
  */
 function initMobileMenu() {
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
+    const body = document.body;
     
     if (!navToggle || !navMenu) return;
     
-    // Fonction pour basculer le menu
-    function toggleMenu() {
-        navToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
+    // Détection iOS
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    
+    // Variable pour stocker la position de scroll
+    let scrollPosition = 0;
+    
+    // Fonction pour ouvrir le menu
+    function openMenu() {
+        // Sauvegarder la position de scroll
+        scrollPosition = window.pageYOffset;
         
-        // Gestion de l'accessibilité
-        const isExpanded = navMenu.classList.contains('active');
-        navToggle.setAttribute('aria-expanded', isExpanded);
+        // Ajouter les classes
+        navToggle.classList.add('active');
+        navMenu.classList.add('active');
+        body.classList.add('menu-open');
+        
+        // Correctif spécifique iOS
+        if (isIOS) {
+            body.style.position = 'fixed';
+            body.style.top = `-${scrollPosition}px`;
+            body.style.width = '100%';
+        }
+        
+        // Accessibilité
+        navToggle.setAttribute('aria-expanded', 'true');
     }
     
-    // Événement sur le bouton burger
+    // Fonction pour fermer le menu
+    function closeMenu() {
+        // Retirer les classes
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        body.classList.remove('menu-open');
+        
+        // Correctif spécifique iOS
+        if (isIOS) {
+            body.style.position = '';
+            body.style.top = '';
+            body.style.width = '';
+            window.scrollTo(0, scrollPosition);
+        }
+        
+        // Accessibilité
+        navToggle.setAttribute('aria-expanded', 'false');
+    }
+    
+    // Fonction pour basculer le menu
+    function toggleMenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (navMenu.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+    
+    // Événement sur le bouton burger avec support tactile
     navToggle.addEventListener('click', toggleMenu);
+    navToggle.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        toggleMenu(e);
+    }, { passive: false });
     
     // Fermer le menu quand on clique sur un lien
     const navLinks = navMenu.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            navToggle.setAttribute('aria-expanded', 'false');
-        });
+        link.addEventListener('click', closeMenu);
+        link.addEventListener('touchstart', closeMenu, { passive: true });
     });
     
     // Fermer le menu si on clique en dehors
     document.addEventListener('click', (e) => {
         if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            navToggle.setAttribute('aria-expanded', 'false');
+            closeMenu();
+        }
+    });
+    
+    // Fermer le menu avec la touche Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+    
+    // Gérer le redimensionnement de la fenêtre
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+            closeMenu();
         }
     });
 }
