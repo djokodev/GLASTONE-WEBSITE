@@ -305,8 +305,18 @@ a {
 }
 
 .nav-link:hover .nav-text,
-.nav-link:focus .nav-text {
+.nav-link:focus .nav-text,
+.nav-link.active .nav-text {
     font-weight: 500;
+}
+
+/* État actif pour les liens de navigation */
+.nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+.nav-link.active::before {
+    opacity: 1 !important;
 }
 
 /* Menu burger pour mobile - Style Féminin */
@@ -1685,6 +1695,18 @@ a {
         background: rgba(212, 149, 106, 0.05);
         border-color: var(--primary-color);
         transform: translateY(-2px);
+    }
+    
+    /* État actif pour le menu mobile */
+    .nav-link.active {
+        background: var(--primary-color) !important;
+        color: var(--text-white) !important;
+        border-color: var(--primary-color) !important;
+    }
+    
+    .nav-link.active .nav-text {
+        color: var(--text-white) !important;
+        font-weight: 600 !important;
     }
     
     .nav-toggle {

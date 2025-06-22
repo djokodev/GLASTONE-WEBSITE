@@ -92,8 +92,26 @@ function initMobileMenu() {
     // Fermer le menu quand on clique sur un lien
     const navLinks = navMenu.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
-        link.addEventListener('touchstart', closeMenu, { passive: true });
+        link.addEventListener('click', function(e) {
+            // Fermer le menu
+            closeMenu();
+            
+            // Forcer la mise à jour de la navigation active après un délai
+            setTimeout(() => {
+                if (window.updateActiveNavigation) {
+                    window.updateActiveNavigation();
+                }
+            }, 500);
+        });
+        
+        link.addEventListener('touchstart', function(e) {
+            closeMenu();
+            setTimeout(() => {
+                if (window.updateActiveNavigation) {
+                    window.updateActiveNavigation();
+                }
+            }, 500);
+        }, { passive: true });
     });
     
     // Fermer le menu si on clique en dehors
@@ -133,13 +151,39 @@ function initSmoothScrolling() {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
+                // Fermer le menu mobile si ouvert
+                const navMenu = document.getElementById('navMenu');
+                const navToggle = document.getElementById('navToggle');
+                const body = document.body;
+                
+                if (navMenu && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                    body.classList.remove('menu-open');
+                    
+                    // Correctif iOS
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                    if (isIOS) {
+                        body.style.position = '';
+                        body.style.top = '';
+                        body.style.width = '';
+                    }
+                }
+                
+                // Calculer la position de scroll
                 const headerHeight = document.querySelector('.header').offsetHeight;
                 const targetPosition = targetSection.offsetTop - headerHeight - 20;
                 
+                // Défilement fluide
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+                
+                // Forcer la mise à jour de la navigation active après le scroll
+                setTimeout(() => {
+                    updateActiveNavigation();
+                }, 100);
             }
         });
     });
@@ -153,28 +197,61 @@ function initActiveNavigation() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
     
-    function updateActiveNavigation() {
-        const scrollPosition = window.scrollY + 100;
+    // Fonction globale pour mettre à jour la navigation active
+    window.updateActiveNavigation = function() {
+        const scrollPosition = window.scrollY;
+        const headerHeight = document.querySelector('.header').offsetHeight;
+        const windowHeight = window.innerHeight;
         
+        let currentSection = null;
+        let maxVisibility = 0;
+        
+        // Trouver la section la plus visible
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - headerHeight - 50;
+            const sectionBottom = sectionTop + section.offsetHeight;
             const sectionId = section.getAttribute('id');
             
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                // Retirer la classe active de tous les liens
-                navLinks.forEach(link => link.classList.remove('active'));
+            // Calculer la visibilité de la section
+            let visibility = 0;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                // La section est dans la zone visible
+                const visibleTop = Math.max(scrollPosition, sectionTop);
+                const visibleBottom = Math.min(scrollPosition + windowHeight, sectionBottom);
+                visibility = (visibleBottom - visibleTop) / windowHeight;
                 
-                // Ajouter la classe active au lien correspondant
-                const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
+                if (visibility > maxVisibility) {
+                    maxVisibility = visibility;
+                    currentSection = sectionId;
                 }
             }
         });
-    }
+        
+        // Si aucune section n'est suffisamment visible, utiliser la position de scroll
+        if (!currentSection) {
+            const offset = scrollPosition + headerHeight + 100;
+            
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const section = sections[i];
+                if (offset >= section.offsetTop) {
+                    currentSection = section.getAttribute('id');
+                    break;
+                }
+            }
+        }
+        
+        // Mettre à jour les classes actives
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            if (href === `#${currentSection}`) {
+                link.classList.add('active');
+            }
+        });
+    };
     
-    // Mettre à jour au scroll avec throttling pour les performances
+    // Mettre à jour au scroll avec throttling
     let ticking = false;
     function throttledUpdate() {
         if (!ticking) {
@@ -186,8 +263,15 @@ function initActiveNavigation() {
         }
     }
     
+    // Événements
     window.addEventListener('scroll', throttledUpdate);
-    updateActiveNavigation(); // Initialiser
+    window.addEventListener('resize', throttledUpdate);
+    
+    // Initialiser immédiatement
+    updateActiveNavigation();
+    
+    // Initialiser après un petit délai pour s'assurer que tout est chargé
+    setTimeout(updateActiveNavigation, 100);
 }
 
 /**
